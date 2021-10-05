@@ -77,7 +77,7 @@ void CSDIAppView::OnDraw(CDC* pDC)
 		m_rcCircle.top += 20;
 		m_rcCircle.bottom += 20;
 		m_rcCircle.right += 20;
-		m_rcCircle.left += 21;
+		m_rcCircle.left += 20;
 	}
 	Invalidate(TRUE);
 	CRect rect;
