@@ -117,7 +117,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	pDoc->m_pTree->pDoc = pDoc;
 	pDoc->m_pView = (CSDIAppView*)m_wndSplitter.GetPane(0, 1);
 
-	pDoc->m_pView->SetTimer(1,10000,NULL);
+	pDoc->m_pView->SetTimer(1,50,NULL);
 	//return CFrameWnd::OnCreateClient(lpcs, pContext);
 	return TRUE;
 }

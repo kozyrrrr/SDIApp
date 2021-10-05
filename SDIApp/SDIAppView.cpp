@@ -28,6 +28,7 @@ BEGIN_MESSAGE_MAP(CSDIAppView, CView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
 	ON_WM_TIMER()
+	ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 // создание/уничтожение CSDIAppView
@@ -36,6 +37,9 @@ CSDIAppView::CSDIAppView()
 {
 	// TODO: добавьте код создания
 
+	srand(time(NULL));
+	l = r = 2 + rand() % 5;
+	t = b = 2 + rand() % 5;
 
 }
 
@@ -62,32 +66,7 @@ void CSDIAppView::OnDraw(CDC* pDC)
 	CPen pen;
 	pen.CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
 	time(NULL);
-	if (nIDEvent == 1)
-	{
-		if (m_rcCircle.IsRectNull())
-		{
-			CRect rc;
-			GetClientRect(&rc);
 
-			m_rcCircle.left = rc.Width() / 2 - 25;
-			m_rcCircle.bottom = rc.Height() / 2 - 25;
-			m_rcCircle.top = rc.Height() / 2 + 25;
-			m_rcCircle.right = rc.Width() / 2 + 25;
-		}
-		m_rcCircle.top += 20;
-		m_rcCircle.bottom += 20;
-		m_rcCircle.right += 20;
-		m_rcCircle.left += 20;
-	}
-	Invalidate(TRUE);
-	CRect rect;
-	GetClientRect(&rect);
-
-
-
-	int mx, my;
-	mx = rect.Width() / 2;
-	my = rect.Height() / 2;
 
 	pDC->Ellipse(m_rcCircle);
 	//CRect rect;
@@ -193,8 +172,75 @@ void CSDIAppView::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: добавьте свой код обработчика сообщений или вызов стандартного
 
-	
+	int radius = 25;
+	int step = 40;
+	if (nIDEvent == 1)
+	{
+		CRect rc;
+		GetClientRect(&rc);
+
+		if (m_rcCircle.IsRectNull())
+		{
+			// центр
+			m_rcCircle.left = rc.Width() / 2 - radius;
+			m_rcCircle.bottom = rc.Height() / 2 - radius;
+			m_rcCircle.top = rc.Height() / 2 + radius;
+			m_rcCircle.right = rc.Width() / 2 + radius;
+		}
+
+		if (m_rcCircle.bottom > rc.Height() - radius * 2)
+		{
+			b *= -1;
+			t *= -1;
+		}
+		if (m_rcCircle.right > rc.Width())
+		{
+			l *= -1;
+			r *= -1;
+		}
+		if (m_rcCircle.top <= radius * 2)
+		{
+			b *= -1;
+			t *= -1;
+		}
+		if (m_rcCircle.left <= 0)
+		{
+			l *= -1;
+			r *= -1;
+		}
+
+		m_rcCircle.bottom += b;
+		m_rcCircle.top += t;
+		m_rcCircle.right += r;
+		m_rcCircle.left += l;
+
+	}
+	Invalidate(TRUE);
+	CRect rect;
+	GetClientRect(&rect);
+
+
+
+	int mx, my;
+	mx = rect.Width() / 2;
+	my = rect.Height() / 2;
 
 	CView::OnTimer(nIDEvent);
 
+}
+
+
+void CSDIAppView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: добавьте свой код обработчика сообщений или вызов стандартного
+	if (point.x >= m_rcCircle.left && point.x <= m_rcCircle.right && point.y <= m_rcCircle.top && point.y >= m_rcCircle.bottom)
+	{
+		if (isCircMove) KillTimer(1);
+		else SetTimer(1, 50, NULL);
+
+		isCircMove = !isCircMove;
+
+
+		CView::OnLButtonUp(nFlags, point);
+	}
 }

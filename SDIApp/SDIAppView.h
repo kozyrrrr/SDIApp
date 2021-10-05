@@ -16,6 +16,8 @@ protected: // создать только из сериализации
 public:
 	CSDIAppDoc* GetDocument() const;
 	CRect m_rcCircle;
+	int t = 1, l = 1, r = 1, b = 1;
+	bool isCircMove = 1;
 // Операции
 public:
 
@@ -43,6 +45,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // отладочная версия в SDIAppView.cpp
