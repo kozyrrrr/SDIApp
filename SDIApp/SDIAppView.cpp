@@ -65,10 +65,8 @@ void CSDIAppView::OnDraw(CDC* pDC)
 		return;
 	CPen pen;
 	pen.CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
-	time(NULL);
-
-
 	pDC->Ellipse(m_rcCircle);
+
 	//CRect rect;
 	//GetClientRect(&rect);
 	//if (nIDEvent == 1)
@@ -233,6 +231,8 @@ void CSDIAppView::OnTimer(UINT_PTR nIDEvent)
 void CSDIAppView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: добавьте свой код обработчика сообщений или вызов стандартного
+	// сделать проверку клика внутри и извнутри для круга и по щелчку внутри останавливать рисовку
+	// завести bool переменную по которой определять работу рисовки
 	if (point.x >= m_rcCircle.left && point.x <= m_rcCircle.right && point.y <= m_rcCircle.top && point.y >= m_rcCircle.bottom)
 	{
 		if (isCircMove) KillTimer(1);
